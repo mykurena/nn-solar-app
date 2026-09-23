@@ -13,8 +13,7 @@ pinned: false
 
 Aplicación interactiva (Streamlit) para explorar el mapa de aptitud para granjas solares en Paraguay,
 generado con una red neuronal entrenada sobre GHI (Global Solar Atlas), nubosidad, pendiente, uso de
-suelo y áreas protegidas (MADES). Parte del proyecto de tesis de Maestría en Ciencias de la Inteligencia
-Artificial.
+suelo y áreas protegidas (MADES). 
 
 [![Abrir en Hugging Face Spaces](https://img.shields.io/badge/%F0%9F%A4%97%20Hugging%20Face-Abrir%20Space-blue)](HF_SPACE_URL_PLACEHOLDER)
 
