@@ -24,14 +24,33 @@ st.set_page_config(
 st.title("🌞 Análisis de Aptitud para Granjas Solares en Paraguay")
 st.markdown("---")
 
+RASTER_FILENAME = "Mapa_Aptitud_Predicha_NN.tif"
+HF_DATASET_REPO = "mykutest/tesis-solar-aptitud-data"
+
+
+def ensure_raster():
+    """El raster (~216MB) no vive en el repo de GitHub por su tamaño; se descarga
+    una sola vez desde el dataset público de Hugging Face y se cachea localmente."""
+    if os.path.exists(RASTER_FILENAME):
+        return RASTER_FILENAME
+    from huggingface_hub import hf_hub_download
+    with st.spinner("Descargando el mapa de aptitud (~216MB, solo la primera vez)..."):
+        return hf_hub_download(
+            repo_id=HF_DATASET_REPO,
+            filename=RASTER_FILENAME,
+            repo_type="dataset",
+        )
+
+
 # Cargar el raster de aptitud
 @st.cache_resource
 def load_raster():
-    raster_path = "Mapa_Aptitud_Predicha_NN.tif"
-    if not os.path.exists(raster_path):
-        st.error("⚠️ Archivo de mapa no encontrado")
+    try:
+        raster_path = ensure_raster()
+    except Exception as e:
+        st.error(f"⚠️ No se pudo descargar el mapa de aptitud: {e}")
         return None, None, None
-    
+
     with rasterio.open(raster_path) as src:
         data = src.read(1)
         # Enmascarar NaN

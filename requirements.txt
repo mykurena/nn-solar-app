@@ -9,3 +9,4 @@ folium>=0.13,<0.15  # Cambiado para compatibilidad con streamlit-folium
 streamlit-folium==0.16.0
 branca==0.7.0
 Pillow==10.0.0
+huggingface_hub>=0.24.0
