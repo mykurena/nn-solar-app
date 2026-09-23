@@ -1,0 +1,6 @@
+# Raster completo: no cabe en GitHub (>100MB), solo se sube al Space de Hugging Face
+Mapa_Aptitud_Predicha_NN.tif
+
+__pycache__/
+*.pyc
+.DS_Store
