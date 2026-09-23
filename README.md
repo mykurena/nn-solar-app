@@ -25,7 +25,7 @@ repositorio. El raster original a 30m (~216MB) no cabe en la RAM del tier gratui
 (~1GB) ni en el límite de tamaño de GitHub, así que se aloja aparte, en un dataset público de Hugging
 Face, para quien necesite la resolución completa:
 [mykutest/tesis-solar-aptitud-data](https://huggingface.co/datasets/mykutest/tesis-solar-aptitud-data)
-
+Aquí también una versión en [streamlit](https://nn-solar-app-appgfousn6ackrvwqwagxg.streamlit.app/)
 ## Correr localmente
 
 ```bash
