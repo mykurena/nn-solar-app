@@ -16,34 +16,25 @@ st.set_page_config(
 st.title("🌞 Predicción de Aptitud para Granjas Solares en Paraguay")
 st.markdown("---")
 
-RASTER_FILENAME = "Mapa_Aptitud_Predicha_NN.tif"
-HF_DATASET_REPO = "mykutest/tesis-solar-aptitud-data"
+RASTER_FILENAME = "Mapa_Aptitud_web.tif"
 
-
-def ensure_raster():
-    """El raster (~216MB) no vive en el repo de GitHub por su tamaño; se descarga
-    una sola vez desde el dataset público de Hugging Face y se cachea localmente."""
-    if os.path.exists(RASTER_FILENAME):
-        return RASTER_FILENAME
-    from huggingface_hub import hf_hub_download
-    with st.spinner("Descargando el mapa de aptitud (~216MB, solo la primera vez)..."):
-        return hf_hub_download(
-            repo_id=HF_DATASET_REPO,
-            filename=RASTER_FILENAME,
-            repo_type="dataset",
-        )
+# El raster original (30m, ~216MB) satura la RAM del tier gratuito de Streamlit
+# Cloud (~1GB) apenas se descarga y carga -> el healthcheck moría con "EOF".
+# La app usa esta versión reescalada (~600m/píxel, <1MB), bundleada en el repo,
+# más que suficiente para explorar el mapa a escala país/región. El raster
+# original de 30m sigue disponible para descarga en el dataset de Hugging Face
+# (ver README) para quien necesite la resolución completa.
+HF_FULL_RES_DATASET = "mykutest/tesis-solar-aptitud-data"
 
 
 # Cargar el raster de aptitud
 @st.cache_resource
 def load_raster():
-    try:
-        raster_path = ensure_raster()
-    except Exception as e:
-        st.error(f"⚠️ No se pudo descargar el mapa de aptitud: {e}")
+    if not os.path.exists(RASTER_FILENAME):
+        st.error(f"⚠️ No se encontró {RASTER_FILENAME} en el repositorio.")
         return None, None
 
-    with rasterio.open(raster_path) as src:
+    with rasterio.open(RASTER_FILENAME) as src:
         data = src.read(1)
         # Enmascarar NaN
         data = np.ma.masked_where(np.isnan(data), data)

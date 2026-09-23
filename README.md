@@ -20,9 +20,10 @@ para evitar que el modelo simplemente reconstruya su propia fórmula.
 
 ## Datos
 
-El raster `Mapa_Aptitud_Predicha_NN.tif` (~216MB) no está en este repositorio por su tamaño (supera el
-límite de GitHub). Se aloja en un dataset público de Hugging Face y la app lo descarga automáticamente
-la primera vez que corre:
+La app usa `Mapa_Aptitud_web.tif`, una versión reescalada (~600m/píxel, <1MB) bundleada en este
+repositorio. El raster original a 30m (~216MB) no cabe en la RAM del tier gratuito de Streamlit Cloud
+(~1GB) ni en el límite de tamaño de GitHub, así que se aloja aparte, en un dataset público de Hugging
+Face, para quien necesite la resolución completa:
 [mykutest/tesis-solar-aptitud-data](https://huggingface.co/datasets/mykutest/tesis-solar-aptitud-data)
 
 ## Correr localmente
@@ -32,13 +33,11 @@ pip install -r requirements.txt
 streamlit run app.py
 ```
 
-La primera ejecución descarga el raster (~216MB) desde Hugging Face y lo cachea localmente.
-
 ## Despliegue
 
 Pensada para **[Streamlit Community Cloud](https://streamlit.io/cloud)** (gratis): conectá este
 repositorio de GitHub, elegí `app.py` como entry point, y listo — no necesita Docker ni variables de
-entorno, el raster se descarga solo en el primer arranque.
+entorno, el raster liviano ya está en el repo.
 
 También incluye un `Dockerfile` por si se prefiere desplegar en cualquier otro servicio que soporte
 contenedores (Render, Railway, un Space de Hugging Face con plan PRO, etc.):
