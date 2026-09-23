@@ -93,7 +93,9 @@ if mapa is not None and src is not None:
         ImageOverlay(
             image=mapa_vis,
             bounds=[[bounds.bottom, bounds.left], [bounds.top, bounds.right]],
-            colormap=lambda x: colormap(x),
+            colormap=colormap,  # objeto ColorMap directo: envolverlo en lambda le hace
+                                 # perder el isinstance-check de branca y devuelve hex
+                                 # strings en vez de tuplas RGBA -> IndexError
             name='Aptitud Solar',
             opacity=0.7
         ).add_to(m)
